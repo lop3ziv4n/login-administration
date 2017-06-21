@@ -7,12 +7,11 @@ import { User } from '../../models/user';
 
 @Component({
   moduleId: module.id,
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-change-password',
+  templateUrl: './change-password.component.html',
+  styleUrls: ['./change-password.component.css']
 })
-
-export class RegisterComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit {
 
   user: User;
   loading = false;
@@ -27,17 +26,6 @@ export class RegisterComponent implements OnInit {
     this.user = new User();
   }
 
-  register() {
-    this.loading = true;
-    this.userService.create(this.user)
-      .subscribe(
-      data => {
-        this.alertService.success('Registration successful', true);
-        this.router.navigate(['/login']);
-      },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-      });
+  change() {    
   }
 }

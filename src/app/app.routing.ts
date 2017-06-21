@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthenticationGuard] },
   { path: 'login', redirectTo: '/login', pathMatch: 'full' },
   { path: 'register', redirectTo: '/register', pathMatch: 'full' },
-
+  
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
 ];

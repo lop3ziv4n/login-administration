@@ -1,39 +1,75 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 
 import { User } from '../models/user';
+import { AuthenticationResponse } from '../models/authentication-response'
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UserService {
+
+  private url = environment.rest_webservice_user_api_url;
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+
   constructor(private http: Http) { }
 
-  getAll() {
-    return this.http.get('/api/users', this.jwt()).map((response: Response) => response.json());
+  create(user: User): Observable<AuthenticationResponse> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    const url = `${this.url}/create`;
+
+    return this.http.post(url, JSON.stringify(user), options)
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
   }
 
-  getById(id: number) {
-    return this.http.get('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
+  resetPassword(email: String): Observable<AuthenticationResponse> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let url = `${this.url}/reset-password/`;
+
+    return this.http.put(`${url}/${email}`, options)
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
   }
 
-  create(user: User) {
-    return this.http.post('/api/users', user, this.jwt()).map((response: Response) => response.json());
+  changePassword(key: String, password: String): Observable<AuthenticationResponse> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let url = `${this.url}/change-password/`;
+
+    return this.http.put(`${url}/${key}`, JSON.stringify(password), options)
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
   }
 
-  update(user: User) {
-    return this.http.put('/api/users/' + user.id, user, this.jwt()).map((response: Response) => response.json());
+  activation(key: String): Observable<AuthenticationResponse> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let url = `${this.url}/activation/`;
+
+    return this.http.put(`${url}/${key}`, options)
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
   }
 
-  delete(id: number) {
-    return this.http.delete('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
-  }
-
-  // private helper methods
-  private jwt() {
-    // create authorization header with jwt token
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser && currentUser.token) {
-      let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-      return new RequestOptions({ headers: headers });
+  private handleError(error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
     }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }

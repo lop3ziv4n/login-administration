@@ -4,5 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  
+  rest_webservice_user_api_url: 'http://localhost:8086/user',
+  rest_webservice_authentication_api_url: 'http://localhost:8086/authentication'
 };

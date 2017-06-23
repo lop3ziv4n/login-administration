@@ -14,6 +14,7 @@ import { User } from '../../models/user';
 
 export class RegisterComponent implements OnInit {
 
+  model: any = {}; 
   user: User;
   loading = false;
 
@@ -23,17 +24,25 @@ export class RegisterComponent implements OnInit {
     private alertService: AlertService
   ) { }
 
-  ngOnInit(): void {
-    this.user = new User();
+  ngOnInit(): void {    
   }
 
   register() {
     this.loading = true;
+    
+    this.user = new User();
+    this.user.username = this.model.username;
+    this.user.email = this.model.email;
+    this.user.password = this.model.password;
+
     this.userService.create(this.user)
       .subscribe(
       data => {
-        this.alertService.success('Registration successful', true);
-        this.router.navigate(['/login']);
+        alert(JSON.stringify(data.status))
+        this.alertService.success(data.status.reasonPhrase);
+        //this.alertService.success('Registration successful', true);
+        //this.router.navigate(['/login']);
+        this.loading = false;
       },
       error => {
         this.alertService.error(error);

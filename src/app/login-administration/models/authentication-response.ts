@@ -1,7 +1,7 @@
 import { Authentication } from '../models/authentication';
-import { HttpStatusResponse } from '../models/http-status-response';
+import { StatusResponse } from '../models/status-response';
 
 export class AuthenticationResponse {
-    status: HttpStatusResponse;
+    status: StatusResponse;
     entity: Authentication;
 }

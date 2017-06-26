@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 
 import { AlertService } from '../../services/alert.service';
 import { UserService } from '../../services/user.service';
-import { User } from '../../models/user';
+
+import { HttpStatus } from '../../utils/http-status';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +14,7 @@ import { User } from '../../models/user';
 })
 export class ChangePasswordComponent implements OnInit {
 
-  user: User;
+  model: any = {};
   loading = false;
 
   constructor(
@@ -23,9 +24,26 @@ export class ChangePasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user = new User();
   }
 
-  change() {    
+  change() {
+    this.loading = true;
+
+    this.userService.changePassword(this.router.parseUrl(this.router.url).queryParams["key"], this.model.password)
+      .subscribe(
+      data => {
+        if (HttpStatus.password_changed == data.status.code) {
+          this.alertService.success('Password Changed successful', true);
+          this.router.navigate(['/login']);
+          this.loading = false;
+        } else {
+          this.alertService.error(data.status.description);
+          this.loading = false;
+        }
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      });
   }
 }

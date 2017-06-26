@@ -8,13 +8,12 @@ import { HttpStatus } from '../../utils/http-status';
 
 @Component({
   moduleId: module.id,
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+  selector: 'app-activation',
+  templateUrl: './activation.component.html',
+  styleUrls: ['./activation.component.css']
 })
-export class ResetPasswordComponent implements OnInit {
+export class ActivationComponent implements OnInit {
 
-  model: any = {};
   loading = false;
 
   constructor(
@@ -23,17 +22,18 @@ export class ResetPasswordComponent implements OnInit {
     private alertService: AlertService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.activation();
   }
 
-  reset() {
+  activation() {
     this.loading = true;
 
-    this.userService.resetPassword(this.model.email)
+    this.userService.activation(this.router.parseUrl(this.router.url).queryParams["key"])
       .subscribe(
       data => {
-        if (HttpStatus.reset_password_notification == data.status.code) {
-          this.alertService.success('Reset password notification', true);
+        if (HttpStatus.authentication_ok == data.status.code) {
+          this.alertService.success('Activation successful', true);
           this.router.navigate(['/login']);
           this.loading = false;
         } else {

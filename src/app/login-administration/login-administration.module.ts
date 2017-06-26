@@ -7,9 +7,9 @@ import { RegisterComponent } from './views/register/register.component';
 import { AlertComponent } from './views/alert/alert.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
+import { ActivationComponent } from './views/activation/activation.component';
 
 import { AuthenticationGuard } from './guards/authentication.guard';
-
 
 import { EqualValidatorDirective } from './directive/equal-validator.directive';
 
@@ -26,7 +26,8 @@ import { LoginAdministrationRouting } from './login-administration.routing';
     RegisterComponent,
     ResetPasswordComponent,
     ChangePasswordComponent,
-    EqualValidatorDirective
+    EqualValidatorDirective,
+    ActivationComponent
   ],
   imports: [
     CommonModule,

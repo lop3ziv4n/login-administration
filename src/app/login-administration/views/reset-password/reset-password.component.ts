@@ -15,7 +15,7 @@ import { HttpStatus } from '../../utils/http-status';
 export class ResetPasswordComponent implements OnInit {
 
   model: any = {};
-  loading = false;
+  loading: boolean = false;
 
   constructor(
     private router: Router,

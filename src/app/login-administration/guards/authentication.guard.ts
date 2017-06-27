@@ -10,7 +10,7 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (localStorage.getItem('currentUser')) {
+    if (localStorage.getItem('currentAuthentication')) {
       // logged in so return true
       return true;
     }

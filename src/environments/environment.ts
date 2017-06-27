@@ -7,5 +7,9 @@ export const environment = {
   production: false,
   
   rest_webservice_user_api_url: 'http://localhost:8086/user',
-  rest_webservice_authentication_api_url: 'http://localhost:8086/authentication'
+  rest_webservice_authentication_api_url: 'http://localhost:8086/authentication',
+  rest_webservice_role_api_url: 'http://localhost:8086/role',
+    
+  role_user: 'ROLE_USER',
+  role_admin: 'ROLE_ADMIN'
 };

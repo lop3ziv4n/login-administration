@@ -17,10 +17,8 @@ import { HttpStatus } from '../../utils/http-status';
 export class LoginComponent implements OnInit {
 
   model: any = {};
-  user: User;
-  loading = false;
+  loading: boolean = false;
   returnUrl: string;
-  authentication: Authentication;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,23 +27,25 @@ export class LoginComponent implements OnInit {
     private alertService: AlertService
   ) { }
 
-  ngOnInit() {    
+  ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.logout();
   }
 
   login() {
     this.loading = true;
 
-    this.user = new User();
-    this.user.username = this.model.username;
-    this.user.password = this.model.password;
+    let user: User = new User();
+    user.username = this.model.username;
+    user.password = this.model.password;
 
-    this.authenticationService.login(this.user)
+    this.authenticationService.login(user)
       .subscribe(
       data => {
-        if (HttpStatus.authentication_ok == data.status.code) {
-          this.router.navigate([this.returnUrl]);
+        if (HttpStatus.authentication_ok == data.status.code) {          
           localStorage.setItem('currentAuthentication', JSON.stringify(data.entity));
+          this.router.navigate([this.returnUrl]);
+          this.loading = false;
         } else {
           this.alertService.error(data.status.description);
           this.loading = false;
@@ -58,9 +58,10 @@ export class LoginComponent implements OnInit {
   }
 
   logout() {
-    this.authentication = JSON.parse(localStorage.getItem('currentAuthentication'));
-    this.authenticationService.logout(this.authentication.user);
-    localStorage.removeItem('currentAuthentication');
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-  }  
+    let authentication: Authentication = JSON.parse(localStorage.getItem('currentAuthentication'));
+    if (authentication != null) {
+      this.authenticationService.logout(authentication.user);
+      localStorage.removeItem('currentAuthentication');
+    }
+  }
 }

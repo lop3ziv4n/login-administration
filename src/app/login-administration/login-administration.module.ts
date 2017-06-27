@@ -16,6 +16,7 @@ import { EqualValidatorDirective } from './directive/equal-validator.directive';
 import { AlertService } from './services/alert.service';
 import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
+import { RoleService } from './services/role.service';
 
 import { LoginAdministrationRouting } from './login-administration.routing';
 
@@ -26,8 +27,8 @@ import { LoginAdministrationRouting } from './login-administration.routing';
     RegisterComponent,
     ResetPasswordComponent,
     ChangePasswordComponent,
-    EqualValidatorDirective,
-    ActivationComponent
+    ActivationComponent,
+    EqualValidatorDirective    
   ],
   imports: [
     CommonModule,
@@ -38,7 +39,8 @@ import { LoginAdministrationRouting } from './login-administration.routing';
     AuthenticationGuard,
     AlertService,
     AuthenticationService,
-    UserService
+    UserService,
+    RoleService
   ],
   exports: [
     AlertComponent

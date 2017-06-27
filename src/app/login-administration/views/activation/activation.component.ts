@@ -14,7 +14,7 @@ import { HttpStatus } from '../../utils/http-status';
 })
 export class ActivationComponent implements OnInit {
 
-  loading = false;
+  loading: boolean = false;
 
   constructor(
     private router: Router,
@@ -32,7 +32,7 @@ export class ActivationComponent implements OnInit {
     this.userService.activation(this.router.parseUrl(this.router.url).queryParams["key"])
       .subscribe(
       data => {
-        if (HttpStatus.authentication_ok == data.status.code) {
+        if (HttpStatus.activation_ok == data.status.code) {
           this.alertService.success('Activation successful', true);
           this.router.navigate(['/login']);
           this.loading = false;

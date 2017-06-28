@@ -8,5 +8,5 @@ export class User {
     email: string;    
     password: string;
     enabled: boolean = true;
-    role: Role[]
+    roles: Role[]
 }

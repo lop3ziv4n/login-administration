@@ -44,7 +44,7 @@ export class UserService {
 
     let url = `${this.url}/change-password/`;
 
-    return this.http.put(`${url}/${key}`, JSON.stringify(password), options)
+    return this.http.put(`${url}/${key}`, password, options)
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }

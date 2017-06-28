@@ -34,13 +34,30 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.loading = true;
+    this.build();
+  }
 
+  build() {
     let user: User = new User();
     user.username = this.model.username;
     user.email = this.model.email;
     user.password = this.model.password;
-    user.role = [this.getRole()];
 
+    let code = this.router.parseUrl(this.router.url).queryParams["role"];
+
+    if (code == null) {
+      code = environment.role_user;
+    }
+
+    this.roleService.getRoleByCode(code)
+      .subscribe(
+      data => {
+        user.roles = [data];
+        this.createUser(user);
+      });
+  }
+
+  createUser(user: User) {
     this.userService.create(user)
       .subscribe(
       data => {
@@ -57,21 +74,5 @@ export class RegisterComponent implements OnInit {
         this.alertService.error(error);
         this.loading = false;
       });
-  }
-
-  private getRole(): Role {
-    let role: Role = new Role();
-    let code = this.router.parseUrl(this.router.url).queryParams["role"];
-
-    if (code == null) {
-      code = environment.role_user;
-    }
-
-    this.roleService.getRoleByCode(code)
-      .subscribe(
-      data => role = data
-      );
-
-    return role;
   }
 }
